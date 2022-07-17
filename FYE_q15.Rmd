@@ -1,0 +1,38 @@
+---
+title: "First Year Exam - Question 15"
+author: "Taylor F. (A59010460)"
+date: "7/17/2022"
+output: html_document
+---
+
+
+```{r}
+library("ggplot2")
+library("lubridate")
+library("tidyverse")
+library("dplyr")
+```
+
+```{r}
+var_data <- read.csv("covid19_variants.csv")
+var_data_no_total <- subset(var_data, variant_name != "Total" & variant_name != "Other")
+data <- var_data_no_total[, c("date", "variant_name", "percentage")]
+data$date <- ymd(data$date)
+```
+
+
+```{r}
+#df <- var_data_no_total %>% select(date, variant_name) %>% gather(key = "variant_name", value = "percentage", -date)
+#head(df)
+```
+
+
+```{r}
+var_plot <- ggplot(data) + aes(date, percentage, col = variant_name) + geom_line(group = 1) +  labs(x="Date", y="Percent of Sequenced Specimens",
+       title="COVID-19 Variants in California",
+       caption="Data source: <https://www.cdph.ca.gov/>") + scale_colour_discrete(name="Variant")
+var_plot
+```
+
+
+
