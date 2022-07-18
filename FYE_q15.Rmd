@@ -2,11 +2,14 @@
 title: "First Year Exam - Question 15"
 author: "Taylor F. (A59010460)"
 date: "7/17/2022"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 
 ```{r}
+#load in necessary packages
 library("ggplot2")
 library("lubridate")
 library("tidyverse")
@@ -14,9 +17,13 @@ library("dplyr")
 ```
 
 ```{r}
+#read in csv
 var_data <- read.csv("covid19_variants.csv")
+#remove total and other
 var_data_no_total <- subset(var_data, variant_name != "Total" & variant_name != "Other")
+#extract relevant columns
 data <- var_data_no_total[, c("date", "variant_name", "percentage")]
+#format date
 data$date <- ymd(data$date)
 ```
 
@@ -28,6 +35,7 @@ data$date <- ymd(data$date)
 
 
 ```{r}
+#make plot
 var_plot <- ggplot(data) + aes(date, percentage, col = variant_name) + geom_line(group = 1) +  labs(x="Date", y="Percent of Sequenced Specimens",
        title="COVID-19 Variants in California",
        caption="Data source: <https://www.cdph.ca.gov/>") + scale_colour_discrete(name="Variant")
